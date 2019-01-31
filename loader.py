@@ -9,6 +9,14 @@ def load_csv_dicts(csv_input_path):
         dicts.append(row)
     return dicts
 
+def load_csv_matrix(csv_input_path, encoder='utf-8', delimit = ','):
+    dataset = []; 
+    fin = open(csv_input_path, "r", encoding = encoder) 
+    reader = csv.reader(fin, delimiter = delimit)  
+    for row in reader:
+        dataset.append(row)
+    return dataset
+
 def array_to_csvline(array):
     result = ""
     is_first = True
