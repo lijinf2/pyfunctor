@@ -94,3 +94,8 @@ def print_rows(dataset, topk = -1):
     for i in range(topk):
         print(dataset[i])
         print("\n")
+
+def dump_dataset(output_filename, dataset):
+    with open(output_filename, 'w') as fout:
+        for row in dataset:
+            fout.write("%s\n" % row)
