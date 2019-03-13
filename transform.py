@@ -95,6 +95,16 @@ def print_rows(dataset, topk = -1):
         print(dataset[i])
         print("\n")
 
+def split_func(dataset, split_functor):                                                                                                                                                                
+    A_data = []                                                                                                                                                                                        
+    B_data = []       
+    for row in dataset:
+        if split_functor(row):
+            A_data.append(row)
+        else:
+            B_data.append(row)
+    return [A_data, B_data]
+    
 def dump_dataset(output_filename, dataset):
     with open(output_filename, 'w') as fout:
         for row in dataset:
