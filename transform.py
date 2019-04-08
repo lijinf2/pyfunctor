@@ -32,6 +32,13 @@ def reduce_func(dataset, aggregator) :
             
     return result
 
+def merge_func(dataset_1, dataset_2, functor):
+    assert(len(dataset_1) == len(dataset_2))
+    results = [];
+    for i in range(len(dataset_1)):
+        results.append(functor(dataset_1[i], dataset_2[i]))
+    return results
+
 def joinbykey_func(left_dataset, right_dataset, left_key = lambda left_record : left_record[0], right_key = lambda right_record: right_record[0], left_value = lambda left_record: left_record[1], right_value = lambda right_record : right_record[1]):
     dt = {}
     for right_record in right_dataset:
