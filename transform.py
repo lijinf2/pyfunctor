@@ -100,7 +100,6 @@ def print_rows(dataset, topk = -1):
         topk = len(dataset)
     for i in range(topk):
         print(dataset[i])
-        print("\n")
 
 def split_func(dataset, split_functor):                                                                                                                                                                
     A_data = []                                                                                                                                                                                        
