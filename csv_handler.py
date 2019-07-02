@@ -3,8 +3,8 @@ from sampler import Sampler
 import transform as transformer
 import csv
 
-def csv_readlines(data_path, encoder = 'utf-8', delimit = ','):
-    reader = csv.reader(open(data_path, 'rt', encoding = encoder), delimiter = delimit)
+def csv_readlines(data_path, encoder = 'utf-8', delimit = ',', quoter='"'):
+    reader = csv.reader(open(data_path, 'rt', encoding = encoder), delimiter = delimit, quoting = quoter)
     dataset = []
     for row in reader:
         dataset.append(row)
