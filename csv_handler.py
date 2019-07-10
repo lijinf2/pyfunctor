@@ -2,6 +2,8 @@ from sampler import Sampler
 
 import transform as transformer
 import csv
+import sys
+csv.field_size_limit(sys.maxsize)
 
 def csv_readlines(data_path, encoder = 'utf-8', delimit = ',', quoter='"'):
     reader = csv.reader(open(data_path, 'rt', encoding = encoder), delimiter = delimit, quoting = quoter)
