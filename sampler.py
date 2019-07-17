@@ -1,4 +1,5 @@
 import random
+import transform as transformer
 class Sampler:
     def __init__(self, seed = 0):
         random.seed(seed)
@@ -12,3 +13,11 @@ class Sampler:
             if number not in result:
                 result.add(number)
         return result  
+
+    def sample_rows(self, dataset, num_samples):
+        assert(num_samples < len(dataset))
+        idx_set = self.distinct_ints(num_samples, 0, len(dataset) - 1)
+        idx_set = list(idx_set)
+        idx_set.sort()
+        result = transformer.map_func(idx_set, lambda idx : dataset[idx])
+        return result
