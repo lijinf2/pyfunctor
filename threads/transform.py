@@ -55,4 +55,4 @@ def test_map_func_single():
 
 
 #test_map_func()
-test_map_func_single()
+#test_map_func_single()
