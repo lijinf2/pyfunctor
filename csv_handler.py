@@ -3,6 +3,7 @@ from sampler import Sampler
 import transform as transformer
 import csv
 import sys
+import os
 csv.field_size_limit(sys.maxsize)
 
 def csv_readlines(data_path, encoder = 'utf-8', delimit = ',', quoter=csv.QUOTE_MINIMAL):
@@ -16,6 +17,14 @@ def csv_writelines(output_path, dataset, encoder = 'utf-8', delimit = ','):
     writer = csv.writer(open(output_path, 'w', encoding = encoder), delimiter = delimit)
     for row in dataset:
         writer.writerow(row)
+
+def append_row(csv_file_name, row, encoder = 'utf-8', delimit = ','):
+    if not os.path.exists(csv_file_name):
+        f = open(csv_file_name, "w+", encoding = encoder)
+        f.close()
+
+    csv_writer = csv.writer(open(csv_file_name, 'a', encoding = encoder), delimiter = delimit)
+    csv_writer.writerow(row)
 
 class CSV_Handler:
     def __init__(self, data_path, seed = 0, encoder = 'utf-8', delimit = ','):
