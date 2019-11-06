@@ -54,6 +54,25 @@ def joinbykey_func(left_dataset, right_dataset, left_key = lambda left_record : 
         
     return result_dataset
 
+def joinbykey_left_func(left_dataset, right_dataset, non_exist_value = None, left_key = lambda left_record : left_record[0], right_key = lambda right_record: right_record[0], left_value = lambda left_record: left_record[1], right_value = lambda right_record : right_record[1]):
+    dt = {}
+    for right_record in right_dataset:
+        key = right_key(right_record)
+        assert(right_key(right_record) not in dt)
+        dt[key] = right_value(right_record)
+        
+    result_dataset = []    
+    for left_record in left_dataset:
+        key = left_key(left_record)
+        result = ()
+        if key not in dt:
+            result = (key, left_value(left_record), non_exist_value)
+        else:
+            result = (key, left_value(left_record), dt[key])
+        result_dataset.append(result)
+        
+    return result_dataset
+
 def groupbykey_func(dataset, key_extractor = lambda row: row[0], value_extractor = lambda row: row[1]):                                
     pairs = {}                                                                                                                                 
     for row in dataset:                                                                                                                        
