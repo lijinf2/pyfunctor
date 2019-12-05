@@ -73,6 +73,31 @@ def joinbykey_left_func(left_dataset, right_dataset, non_exist_value = None, lef
         
     return result_dataset
 
+def joinbykey_outer_func(left_dataset, right_dataset, non_exist_value = None, left_key = lambda left_record : left_record[0], right_key = lambda right_record: right_record[0], left_value = lambda left_record: left_record[1], right_value = lambda right_record : right_record[1]):
+    dt = {}
+    for right_record in right_dataset:
+        key = right_key(right_record)
+        assert(right_key(right_record) not in dt)
+        dt[key] = right_value(right_record)
+
+    used_dt_key = set()
+        
+    result_dataset = []    
+    for left_record in left_dataset:
+        key = left_key(left_record)
+        result = ()
+        if key not in dt:
+            result = (key, left_value(left_record), non_exist_value)
+        else:
+            used_dt_key.add(key)
+            result = (key, left_value(left_record), dt[key])
+        result_dataset.append(result)
+        
+    for key in dt:
+        if key not in used_dt_key:
+            result_dataset.append((key, non_exist_value, dt[key]))
+    return result_dataset
+
 def groupbykey_func(dataset, key_extractor = lambda row: row[0], value_extractor = lambda row: row[1]):                                
     pairs = {}                                                                                                                                 
     for row in dataset:                                                                                                                        
@@ -134,3 +159,18 @@ def dump_dataset(output_filename, dataset):
     with open(output_filename, 'w') as fout:
         for row in dataset:
             fout.write("%s\n" % row)
+
+def flat_func(dataset):
+    return [item for lst in dataset for item in lst]
+
+def wordcount_func(dataset, ascend = False):
+    temp = map_func(dataset, lambda r : (r, 1))
+    wordcount = reducebykey_func(temp, lambda x, y : x + y)
+
+    counts = [(k, c) for k, c in wordcount.items()]
+
+    if ascend:
+        counts.sort(key = lambda p : (p[1], p[0]))
+    else:
+        counts.sort(key = lambda p : (-p[1], p[0]))
+    return counts
