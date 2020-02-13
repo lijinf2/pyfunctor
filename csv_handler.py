@@ -37,7 +37,7 @@ class CSV_Handler:
         samples = transformer.map_func(sampled_idx, lambda idx : self.dataset[idx])
         csv_writelines(output_path, samples)
 
-    def csv_split(self, percentage, first_output_path, second_output_path):
+    def csv_split(self, percentage, first_output_path="", second_output_path=""):
         assert(percentage > 0)
         assert(percentage < 1)
         first_size = percentage * len(self.dataset)
@@ -45,13 +45,19 @@ class CSV_Handler:
 
         # first output
         first_dataset = transformer.map_func(first_idx, lambda idx : self.dataset[idx])
-        csv_writelines(first_output_path, first_dataset)
+
+        if first_output_path != "":
+            csv_writelines(first_output_path, first_dataset)
 
         # second output
         first_idx_set = set(first_idx)
         second_idx = transformer.filter_func(range(len(self.dataset)), lambda idx : idx not in first_idx_set)
         second_dataset = transformer.map_func(second_idx, lambda idx : self.dataset[idx])
-        csv_writelines(second_output_path, second_dataset)
+
+        if second_output_path != "":
+            csv_writelines(second_output_path, second_dataset)
+
+        return (first_dataset, second_dataset)
 
     def __sampled_idx(self, num_samples):
         sampler = Sampler(self.seed)
