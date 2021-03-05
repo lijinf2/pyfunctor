@@ -14,7 +14,10 @@ def csv_readlines(data_path, encoder = 'utf-8', delimit = ',', quoter=csv.QUOTE_
     return dataset
    
 def csv_writelines(output_path, dataset, encoder = 'utf-8', delimit = ','):
-    writer = csv.writer(open(output_path, 'w', encoding = encoder), delimiter = delimit)
+    if output_path != "":
+        writer = csv.writer(open(output_path, 'w', encoding = encoder), delimiter = delimit)
+    else:
+        writer = csv.writer(sys.stdout)
     for row in dataset:
         writer.writerow(row)
 
