@@ -44,10 +44,10 @@ class BertModel:
         self.output_mode = "classification"
 
     # output: score_0, score_1, pred_argmax_class, text
-    def predict(self, all_texts, batch_size = 32):
+    def predict(self, all_texts, batch_size = 32, text_col = 1):
 
-        if type(all_texts) == tuple or type(all_texts) == list:
-            all_texts = transform.map_func(all_texts, lambda row : row[1])
+        if type(all_texts[0]) == tuple or type(all_texts[0]) == list:
+            all_texts = transform.map_func(all_texts, lambda row : row[text_col])
 
         output = []
         i = 0
@@ -69,12 +69,12 @@ class BertModel:
         return output
 
     # train BERT model with labels
-    def train(self, labeled_dataset, train_batch_size = 32, num_epoch = 5, adam_lr = 2e-5, adam_epsilon = 1e-8, scheduler_warmup_steps = 0):
+    def train(self, labeled_dataset, train_batch_size = 32, num_epoch = 5, adam_lr = 2e-5, adam_epsilon = 1e-8, scheduler_warmup_steps = 0, text_col=1, label_col = 2):
 
         # prepare training data
-        texts = transform.map_func(labeled_dataset, lambda tri : tri[1])
+        texts = transform.map_func(labeled_dataset, lambda tri : tri[text_col])
 
-        labels = transform.map_func(labeled_dataset, lambda tri : tri[2])
+        labels = transform.map_func(labeled_dataset, lambda tri : tri[label_col])
 
         train_examples = self.__get_examples(texts, labels)
 
